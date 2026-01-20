@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the latest version of FortiClient VPN.</string>
+	<key>Identifier</key>
+	<string>com.maxhewett.download.FortiClientVPN</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>FortiClient VPN</string>
+		<key>DOWNLOADURL</key>
+		<string>https://links.fortinet.com/forticlient/mac/vpnagent</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>filename</key>
+				<string>FortiClientVPN_OnlineInstaller.dmg</string>
+				<key>curl_opts</key>
+				<array>
+					<string>-L</string>
+				</array>
+				<key>url</key>
+				<string>%DOWNLOADURL%</string>
+			</dict>
+			<key>Processor</key>
+			<string>CURLDownloader</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>dmg_path</key>
+				<string>%RECIPE_CACHE_DIR%/downloads/FortiClientVPN_OnlineInstaller.dmg</string>
+				<key>items_to_copy</key>
+				<array>
+					<dict>
+						<key>source_item</key>
+						<string>FortiClientInstaller.app</string>
+						<key>destination_path</key>
+						<string>%RECIPE_CACHE_DIR%/downloads</string>
+					</dict>
+				</array>
+			</dict>
+			<key>Processor</key>
+			<string>InstallFromDMG</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>FORTICLIENT_EXECUTABLE</key>
+				<string>%RECIPE_CACHE_DIR%/downloads/FortiClientInstaller.app/Contents/MacOS/FortiClientInstaller</string>
+			</dict>
+			<key>Processor</key>
+			<string>FortiClientDownloader</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>source</key>
+				<string>%FORTICLIENT_DMG_PATH%</string>
+				<key>target</key>
+				<string>%RECIPE_CACHE_DIR%/downloads/%NAME%.dmg</string>
+			</dict>
+			<key>Processor</key>
+			<string>FileMover</string>
+		</dict>
+	</array>
+</dict>
+</plist>

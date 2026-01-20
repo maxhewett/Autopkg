@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Copies the latest version of the FortiClient VPN Package.</string>
+	<key>Identifier</key>
+	<string>com.maxhewett.pkg.FortiClientVPN</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>FortiClient VPN</string>
+		<key>DOWNLOADURL</key>
+		<string>https://links.fortinet.com/forticlient/mac/vpnagent</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.maxhewett.download.FortiClientVPN</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>source_pkg</key>
+				<string>%RECIPE_CACHE_DIR%/downloads/%NAME%.dmg/Install.mpkg</string>
+			</dict>
+			<key>Processor</key>
+			<string>PkgCopier</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>flat_pkg_path</key>
+				<string>%pkg_path%</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack/</string>
+			</dict>
+			<key>Processor</key>
+			<string>FlatPkgUnpacker</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>package_info_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack/fctvpn.pkg/PackageInfo</string>
+			</dict>
+			<key>Processor</key>
+			<string>com.github.nmcspadden.shared/PackageInfoVersioner</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>source</key>
+				<string>%RECIPE_CACHE_DIR%/Install.mpkg</string>
+				<key>target</key>
+				<string>%RECIPE_CACHE_DIR%/%NAME%_%version%.mpkg</string>
+			</dict>
+			<key>Processor</key>
+			<string>FileMover</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>package_info_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack/fctvpn.pkg/PackageInfo</string>
+			</dict>
+			<key>Processor</key>
+			<string>com.github.nmcspadden.shared/PackageInfoVersioner</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>source</key>
+				<string>%RECIPE_CACHE_DIR%/downloads/Install.mpkg</string>
+				<key>target</key>
+				<string>%RECIPE_CACHE_DIR%/%NAME%_%version%.mpkg</string>
+			</dict>
+			<key>Processor</key>
+			<string>FileMover</string>
+		</dict>
+	</array>
+</dict>
+</plist>
